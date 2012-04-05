@@ -51,6 +51,30 @@ totient_phi(1) -> 1;
 totient_phi(N) ->
     totient_phi(N, N - 1).
 
+%% (35) Determine the prime factors of a given positive integer
+prime_factors(N, M) ->
+    case is_prime(M) of
+        true when N == M -> [M];
+        true when N rem M == 0 -> [M] ++ prime_factors(N div M, 2);
+        _Else -> prime_factors(N, M + 1)
+    end.
+
+prime_factors(N) ->
+    prime_factors(N, 2).
+
+%% (36) Determine the prime factors of a given positive integer
+%% Construct a list containing the prime factors and their multiplicity.
+prime_factors2(N, M, Count) ->
+    case is_prime(M) of
+        true when N == M -> [{M, Count + 1}];
+        true when N rem M == 0 -> prime_factors2(N div M, M, Count + 1);
+        true when Count > 0 -> [{M, Count}] ++ prime_factors2(N, M + 1, 0); 
+        _Else -> prime_factors2(N, M + 1, 0)
+    end.
+
+prime_factors2(N) ->
+    prime_factors2(N, 2, 0).
+
 arithmetic() ->
     lists:map(fun(N) ->
         case is_prime(N) of
@@ -60,5 +84,7 @@ arithmetic() ->
     end, lists:seq(1, 100)),
     io:format("1071, 462 = ~p~n", [g_common_divisor(1071, 462)]),
     io:format("14 coprime 25: ~p, 15 coprime 25: ~p~n", [co_prime(14, 25), co_prime(15, 25)]),
-    io:format("phi(10) = ~p~n", [totient_phi(10)]).
+    io:format("phi(10) = ~p~n", [totient_phi(10)]),
+    io:format("prime factors of 315: ~p~n", [prime_factors(315)]),
+    io:format("prime factors of 315: ~p~n", [prime_factors2(315)]).
 
