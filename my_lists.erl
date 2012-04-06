@@ -4,13 +4,13 @@
 -define(MY_LIST, [1, 2, 3, 4, 5, 6, 7]).
 
 %% find the last box of a list.
-lists_last([_|T]) when erlang:length(T) > 0 ->
+lists_last([_|T = [_|_]]) ->
 	lists_last(T);
 lists_last([H|_]) ->
 	H.
 
 %% find the last but one box of a list.
-lists_last2([_|T]) when erlang:length(T) > 1 ->
+lists_last2([_|T=[_,_|_]]) ->
 	lists_last2(T);
 lists_last2(L) ->
 	L.
