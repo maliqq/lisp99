@@ -2,8 +2,8 @@
 -export([arithmetic/0]).
 
 %% (31) Determine whether a given integer number is prime
-is_divisable(N, M) ->
-	(N rem M == 0).
+is_divisable(N, M) when rem M == 0) -> true;
+is_divisable(N, M) -> false.
 
 test_prime(_, M) when M == 1 ->
     true;
