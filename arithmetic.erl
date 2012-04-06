@@ -2,14 +2,11 @@
 -export([arithmetic/0]).
 
 %% (31) Determine whether a given integer number is prime
-is_divisable(N, M) when rem M == 0) -> true;
-is_divisable(N, M) -> false.
-
 test_prime(_, M) when M == 1 ->
     true;
 
 test_prime(N, M) ->
-	case is_divisable(N, M) of
+	case N rem M of
 	    true -> false;
 		_Else -> test_prime(N, M - 1)
 	end.
