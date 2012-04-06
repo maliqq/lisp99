@@ -103,5 +103,5 @@ my_lists() ->
 	io:format("decode_dup ~p~n", [decode_dup([{3, 5}, 2, 3, 4, {2, 8}, {4, 11}, 0])]),
 	io:format("count3_dup ~p~n", [count3_dup(?DUP_LIST)]),
 	io:format("dup ~p~n", [dupl([1, 2, 3, 4, 5, 6])]),
-	io:format("dup ~p~n", [repl([1, 2, 3, 4, 5, 6], 3)]).
+	io:format("repl ~p~n", [repl([1, 2, 3, 4, 5, 6], 3)]).
 
