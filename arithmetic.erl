@@ -29,14 +29,14 @@ co_prime(N, M) ->
     end.
 
 %% (34) Calculate Euler's totient function phi(m)
-totient_phi(_, M) when M == 1 -> 1;
-totient_phi(N, M) ->
+phi(_, M) when M == 1 -> 1;
+phi(N, M) ->
     case co_prime(N, M) of
-        true -> 1 + totient_phi(N, M - 1);
-        false -> totient_phi(N, M - 1)
+        true -> 1 + phi(N, M - 1);
+        false -> phi(N, M - 1)
     end.
-totient_phi(1) -> 1;
-totient_phi(N) -> totient_phi(N, N - 1).
+phi(1) -> 1;
+phi(N) -> phi(N, N - 1).
 
 %% (35) Determine the prime factors of a given positive integer
 prime_factors(N, M) ->
@@ -60,16 +60,36 @@ prime_factors2(N, M, Count) ->
 
 prime_factors2(N) -> prime_factors2(N, 2, 0).
 
+%% (37) calculate Euler's totient function phi(m) (improved).
+phi2(N) when is_integer(N) -> phi2([fun(J) ->
+        {P, M} = J,
+        (P - 1) * math:pow(P, M - 1)
+    end(I) || I <- prime_factors2(N)]);
+phi2([]) -> 1;
+phi2([H|T]) -> H * phi2(T).
+
+%% (38) compare the two methods of calculating Euler's totient function.
+compare_phi(N) ->
+    {Time1, Result1} = timer:tc(fun phi/1, [N]),
+    {Time2, Result2} = timer:tc(fun phi2/1, [N]),
+    {Time1, Time2, Result1, Result2}.
+
+%% (39) a list of prime numbers
+prime_numbers(X, Y) -> [I || I <- lists:seq(X, Y), is_prime(I)].
+
 arithmetic() ->
     lists:map(fun(N) ->
         case is_prime(N) of
-            true -> io:format("~p is prime~n", [N]);
+            true -> io:format("~p ", [N]);
             _Else -> N
         end
     end, lists:seq(1, 100)),
-    io:format("1071, 462 = ~p~n", [g_common_divisor(1071, 462)]),
+    io:format("~n1071, 462 = ~p~n", [g_common_divisor(1071, 462)]),
     io:format("14 coprime 25: ~p, 15 coprime 25: ~p~n", [co_prime(14, 25), co_prime(15, 25)]),
-    io:format("phi(10) = ~p~n", [totient_phi(10)]),
+    io:format("phi(10) = ~p~n", [phi(10)]),
     io:format("prime factors of 315: ~p~n", [prime_factors(315)]),
-    io:format("prime factors of 315: ~p~n", [prime_factors2(315)]).
+    io:format("prime factors of 315: ~p~n", [prime_factors2(315)]),
+    io:format("phi(10) = ~p~n", [phi2(10)]),
+    io:format("compare phi(10090) = ~p, ~p~n", [phi(10090), phi2(10090)]),
+    io:format("prime numbers from 100 to 1000: ~p~n", [prime_numbers(100, 1000)]).
 
