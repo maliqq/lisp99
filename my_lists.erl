@@ -85,19 +85,19 @@ repl(L=[H|T], N) when is_list(L) -> repl(H, N) ++ repl(T, N);
 repl(X, N) -> [X] ++ repl(X, N - 1).
 
 my_lists() ->
-	io:format("last: ~p~n", [last(?MY_LIST)]),
-	io:format("last but one: ~p~n", [last2(?MY_LIST)]),
-	io:format("5th: ~p~n", [nth(?MY_LIST, 5)]),
-	io:format("size: ~p~n", [lsize(?MY_LIST)]),
-	io:format("reverse: ~p~n", [lreverse(?MY_LIST)]),
-	io:format("palindrome? ~p~n", [is_palindrome([1, 2, 3, 2, 1, 2])]),
-	io:format("flatten ~p~n", [flatten([1, [2, 3], [4, 5, 6], [7], 8, 9])]),
-	io:format("elim_dup ~p~n", [elim_dup(?DUP_LIST)]),
-	io:format("pack_dup ~p~n", [pack_dup(?DUP_LIST)]),
-	io:format("count_dup ~p~n", [count_dup(?DUP_LIST)]),
-	io:format("count2_dup ~p~n", [count2_dup(?DUP_LIST)]),
-	io:format("decode_dup ~p~n", [decode_dup([{3, 5}, 2, 3, 4, {2, 8}, {4, 11}, 0])]),
-	io:format("count3_dup ~p~n", [count3_dup(?DUP_LIST)]),
-	io:format("dup ~p~n", [dupl([1, 2, 3, 4, 5, 6])]),
-	io:format("repl ~p~n", [repl([1, 2, 3, 4, 5, 6], 3)]).
+    io:format("last: ~p~n", [last(?MY_LIST)]),
+    io:format("last but one: ~p~n", [last2(?MY_LIST)]),
+    io:format("5th: ~p~n", [nth(?MY_LIST, 5)]),
+    io:format("size: ~p~n", [lsize(?MY_LIST)]),
+    io:format("reverse: ~p~n", [lreverse(?MY_LIST)]),
+    io:format("palindrome? ~p~n", [is_palindrome([1, 2, 3, 2, 1, 2])]),
+    io:format("flatten ~p~n", [flatten([1, [2, 3], [4, 5, 6], [7], 8, 9])]),
+    io:format("elim_dup ~p~n", [elim_dup(?DUP_LIST)]),
+    io:format("pack_dup ~p~n", [pack_dup(?DUP_LIST)]),
+    io:format("count_dup ~p~n", [count_dup(?DUP_LIST)]),
+    io:format("count2_dup ~p~n", [count2_dup(?DUP_LIST)]),
+    io:format("decode_dup ~p~n", [decode_dup([{3, 5}, 2, 3, 4, {2, 8}, {4, 11}, 0])]),
+    io:format("count3_dup ~p~n", [count3_dup(?DUP_LIST)]),
+    io:format("dup ~p~n", [dupl([1, 2, 3, 4, 5, 6])]),
+    io:format("repl ~p~n", [repl([1, 2, 3, 4, 5, 6], 3)]).
 
