@@ -21,10 +21,8 @@ lsize([]) -> 0;
 lsize([_|T]) -> lsize(T) + 1.
 
 %% (5) reverse a list
-lreverse([H|[]]) ->
-    [H];
-lreverse([H|T]) ->
-    lreverse(T) ++ [H].
+lreverse([H|[]]) -> [H];
+lreverse([H|T]) -> lreverse(T) ++ [H].
 
 %% (6) find out whether a list is a palindrome.
 is_palindrome([]) -> true;
@@ -52,14 +50,12 @@ pack_dup([H|T]) -> [[H]] ++ pack_dup(T).
 
 %% (10) run-length encoding of a list
 count_dup2(L) -> [X|_] = L, {erlang:length(L), X}.
-count_dup(L) ->
-    [count_dup2(X) || X <- pack_dup(L)].
+count_dup(L) -> [count_dup2(X) || X <- pack_dup(L)].
 
 %% (11) modified run-length encoding
 count_dup3([X|_=[]]) -> X;
 count_dup3(L) -> [X|_] = L, {erlang:length(L), X}.
-count2_dup(L) when is_list(L) ->
-    [count_dup3(X) || X <- pack_dup(L)].
+count2_dup(L) when is_list(L) -> [count_dup3(X) || X <- pack_dup(L)].
 
 %% (12) decode a run-length encoded list
 decode_dup(X, N) when N == 1 -> [X];

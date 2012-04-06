@@ -2,9 +2,7 @@
 -export([arithmetic/0]).
 
 %% (31) Determine whether a given integer number is prime
-test_prime(_, M) when M == 1 ->
-    true;
-
+test_prime(_, M) when M == 1 -> true;
 test_prime(N, M) ->
 	case N rem M of
 		0 -> false;
@@ -12,11 +10,8 @@ test_prime(N, M) ->
 	end.
 
 is_prime(N) when N == 1 -> false;
-
 is_prime(N) when N == 2 -> true;
-
-is_prime(N) ->
-	test_prime(N, erlang:trunc(math:sqrt(N))).
+is_prime(N) -> test_prime(N, erlang:trunc(math:sqrt(N))).
 
 %% (32) Determine the greatest common divisor of two positive integer numbers
 g_common_divisor(N, M) ->
@@ -34,16 +29,14 @@ co_prime(N, M) ->
     end.
 
 %% (34) Calculate Euler's totient function phi(m)
-totient_phi(_, M) when M == 1 ->
-    1;
+totient_phi(_, M) when M == 1 -> 1;
 totient_phi(N, M) ->
     case co_prime(N, M) of
         true -> 1 + totient_phi(N, M - 1);
         false -> totient_phi(N, M - 1)
     end.
 totient_phi(1) -> 1;
-totient_phi(N) ->
-    totient_phi(N, N - 1).
+totient_phi(N) -> totient_phi(N, N - 1).
 
 %% (35) Determine the prime factors of a given positive integer
 prime_factors(N, M) ->
@@ -53,8 +46,7 @@ prime_factors(N, M) ->
         _Else -> prime_factors(N, M + 1)
     end.
 
-prime_factors(N) ->
-    prime_factors(N, 2).
+prime_factors(N) -> prime_factors(N, 2).
 
 %% (36) Determine the prime factors of a given positive integer
 %% Construct a list containing the prime factors and their multiplicity.
@@ -66,8 +58,7 @@ prime_factors2(N, M, Count) ->
         _Else -> prime_factors2(N, M + 1, 0)
     end.
 
-prime_factors2(N) ->
-    prime_factors2(N, 2, 0).
+prime_factors2(N) -> prime_factors2(N, 2, 0).
 
 arithmetic() ->
     lists:map(fun(N) ->
