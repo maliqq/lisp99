@@ -51,12 +51,26 @@ pack_dup([]) -> [];
 pack_dup([H|T]) -> [[H]] ++ pack_dup(T).
 
 %% (10) run-length encoding of a list
-count_dup([H|T=[Dup|_]], Count) when H == Dup -> count_dup(T, Count + 1);
-count_dup([H|T], Count) -> [{Count + 1, H}] ++ count_dup(T).
+count_each_dup([H|T=[Dup|_]], Count, F) when H == Dup -> count_each_dup(T, Count + 1, F);
+count_each_dup([H|T], Count, F) -> [{Count + 1, H}] ++ F(T).
 
-count_dup([H|T=[Dup|_]]) when H == Dup -> count_dup(T, 1);
+count_dup([H|T=[Dup|_]]) when H == Dup -> count_each_dup(T, 1, fun count_dup/1);
 count_dup([]) -> [];
 count_dup([H|T]) -> [{1, H}] ++ count_dup(T).
+
+%% (11) modified run-length encoding
+count2_dup([H|T=[Dup|_]]) when H == Dup -> count_each_dup(T, 1, fun count2_dup/1);
+count2_dup([]) -> [];
+count2_dup([H|T]) -> [H] ++ count2_dup(T).
+
+%% decode a run-length encoded list
+decode_dup(X, N) when N == 1 -> [X];
+decode_dup(X, N) when N > 1 -> [X] ++ decode_dup(X, N - 1).
+
+decode_dup(L) when is_tuple(L) -> N = element(1, L), X = element(2, L), decode_dup(X, N);
+decode_dup(L=[H|T]) when is_list(L) -> decode_dup(H) ++ decode_dup(T);
+decode_dup([]) -> [];
+decode_dup(L) -> [L].
 
 my_lists() ->
 	io:format("last: ~p~n", [last(?MY_LIST)]),
@@ -68,5 +82,7 @@ my_lists() ->
 	io:format("flatten ~p~n", [flatten([1, [2, 3], [4, 5, 6], [7], 8, 9])]),
 	io:format("elim_dup ~p~n", [elim_dup(?DUP_LIST)]),
 	io:format("pack_dup ~p~n", [pack_dup(?DUP_LIST)]),
-	io:format("count_dup ~p~n", [count_dup(?DUP_LIST)]).
+	io:format("count_dup ~p~n", [count_dup(?DUP_LIST)]),
+	io:format("count2_dup ~p~n", [count2_dup(?DUP_LIST)]),
+	io:format("decode_dup ~p~n", [decode_dup([{3, 5}, 2, 3, 4, {2, 8}, {4, 11}, 0])]).
 
