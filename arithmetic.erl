@@ -7,7 +7,7 @@ test_prime(_, M) when M == 1 ->
 
 test_prime(N, M) ->
 	case N rem M of
-	    true -> false;
+		0 -> false;
 		_Else -> test_prime(N, M - 1)
 	end.
 
