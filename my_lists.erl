@@ -61,7 +61,7 @@ count2_dup(L) when is_list(L) -> [count_dup3(X) || X <- pack_dup(L)].
 decode_dup(X, N) when N == 1 -> [X];
 decode_dup(X, N) when N > 1 -> [X] ++ decode_dup(X, N - 1).
 
-decode_dup(L) when is_tuple(L) -> N = element(1, L), X = element(2, L), decode_dup(X, N);
+decode_dup(L) when is_tuple(L) -> {N, X} = L, decode_dup(X, N);
 decode_dup(L=[H|T]) when is_list(L) -> decode_dup(H) ++ decode_dup(T);
 decode_dup([]) -> [];
 decode_dup(L) -> [L].
