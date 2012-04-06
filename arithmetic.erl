@@ -3,10 +3,7 @@
 
 %% (31) Determine whether a given integer number is prime
 is_divisable(N, M) ->
-	if
-		N rem M == 0 -> true;
-		true -> false
-	end.
+	(N rem M == 0).
 
 test_prime(_, M) when M == 1 ->
     true;
