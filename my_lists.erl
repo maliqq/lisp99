@@ -28,7 +28,7 @@ lists_size([_|T]) ->
     lists_size(T) + 1.
 
 %% reverse a list
-lists_reverse([H|T]) when erlang:length(T) == 0 ->
+lists_reverse([H|[]]) ->
     [H];
 lists_reverse([H|T]) ->
     lists_reverse(T) ++ [H].
