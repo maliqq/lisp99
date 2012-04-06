@@ -38,7 +38,7 @@ flatten([H|T]) -> [H] ++ flatten(T).
 %% eliminate consecutive duplicates of list elements
 scan_while([H|T], H2) when H == H2 -> scan_while(T, H2);
 scan_while(_=[], _) -> [];
-scan_while([H|T], H2) -> uniq1(T).
+scan_while(L, H2) -> uniq1(L).
 
 uniq1([H|_=[H2|T]]) when H == H2 -> [H] ++ scan_while(T, H);
 uniq1([H|T]) -> [H] ++ uniq1(T).
