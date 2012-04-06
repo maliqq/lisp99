@@ -2,6 +2,7 @@
 -export([my_lists/0]).
 
 -define(MY_LIST, [1, 2, 3, 4, 5, 6, 7]).
+-define(DUP_LIST, [1, 1, 1, 1, 1, 2, 3, 1, 1, 2, 2, 2, 4, 5, 6, 7, 7, 7]).
 
 %% (1) find the last box of a list.
 last([_|T=[_|_]]) -> last(T);
@@ -36,14 +37,26 @@ flatten([H|T]) when is_list(H) -> flatten(H) ++ flatten(T);
 flatten([H|T]) -> [H] ++ flatten(T).
 
 %% (8) eliminate consecutive duplicates of list elements
-scan_while([H|T], H2) when H == H2 -> scan_while(T, H2);
-scan_while(_=[], _) -> [];
-scan_while(L, H2) -> eliminate_duplicates(L).
+elim_dup([H|_=[Dup|T]]) when H == Dup -> elim_dup([H] ++ T);
+elim_dup([]) -> [];
+elim_dup(Dup=[_]) -> Dup; %% last
+elim_dup([H|T]) -> [H] ++ elim_dup(T).
 
-eliminate_duplicates([H|_=[H2|T]]) when H == H2 -> [H] ++ scan_while(T, H);
-eliminate_duplicates([H|T]) -> [H] ++ eliminate_duplicates(T).
+%% (9) pack consecutive duplicates of list elements into sublists
+pack_dup([H|T=[Dup|_]], Buf) when H == Dup -> pack_dup(T, Buf ++ [H]);
+pack_dup([H|T], Buf) -> [Buf ++ [H]] ++ pack_dup(T).
 
-%% pack consecutive duplicates of list elements into sublists
+pack_dup([H|T=[Dup|_]]) when H == Dup -> pack_dup(T, [H]);
+pack_dup([]) -> [];
+pack_dup([H|T]) -> [[H]] ++ pack_dup(T).
+
+%% (10) run-length encoding of a list
+count_dup([H|T=[Dup|_]], Count) when H == Dup -> count_dup(T, Count + 1);
+count_dup([H|T], Count) -> [{Count + 1, H}] ++ count_dup(T).
+
+count_dup([H|T=[Dup|_]]) when H == Dup -> count_dup(T, 1);
+count_dup([]) -> [];
+count_dup([H|T]) -> [{1, H}] ++ count_dup(T).
 
 my_lists() ->
 	io:format("last: ~p~n", [last(?MY_LIST)]),
@@ -53,6 +66,7 @@ my_lists() ->
 	io:format("reverse: ~p~n", [lreverse(?MY_LIST)]),
 	io:format("palindrome? ~p~n", [is_palindrome([1, 2, 3, 2, 1, 2])]),
 	io:format("flatten ~p~n", [flatten([1, [2, 3], [4, 5, 6], [7], 8, 9])]),
-	io:format("eliminate duplicates ~p~n", [eliminate_duplicates([1, 1, 1, 1, 1, 2, 3, 1, 1, 2, 2, 2, 4, 5, 6, 7, 7])]).
-	%%io:format("pack duplicates ~p~n", [pack_duplicates([1, 1, 1, 1, 1, 2, 3, 1, 1, 2, 2, 2, 4, 5, 6, 7, 7])]).
+	io:format("elim_dup ~p~n", [elim_dup(?DUP_LIST)]),
+	io:format("pack_dup ~p~n", [pack_dup(?DUP_LIST)]),
+	io:format("count_dup ~p~n", [count_dup(?DUP_LIST)]).
 
