@@ -1,5 +1,5 @@
 -module(arithmetic).
--export([arithmetic/0]).
+-export([start/0]).
 
 %% (31) Determine whether a given integer number is prime
 test_prime(_, M) when M == 1 -> true;
@@ -77,7 +77,7 @@ compare_phi(N) ->
 %% (39) a list of prime numbers
 prime_numbers(X, Y) -> [I || I <- lists:seq(X, Y), is_prime(I)].
 
-arithmetic() ->
+start() ->
     lists:map(fun(N) ->
         case is_prime(N) of
             true -> io:format("~p ", [N]);
@@ -90,6 +90,6 @@ arithmetic() ->
     io:format("prime factors of 315: ~p~n", [prime_factors(315)]),
     io:format("prime factors of 315: ~p~n", [prime_factors2(315)]),
     io:format("phi(10) = ~p~n", [phi2(10)]),
-    io:format("compare phi(10090) = ~p, ~p~n", [phi(10090), phi2(10090)]),
+    io:format("compare phi(10090) = ~p~n", [compare_phi(10090)]),
     io:format("prime numbers from 100 to 1000: ~p~n", [prime_numbers(100, 1000)]).
 

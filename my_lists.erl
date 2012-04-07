@@ -1,5 +1,5 @@
 -module(my_lists).
--export([my_lists/0]).
+-export([start/0]).
 
 -define(MY_LIST, [1, 2, 3, 4, 5, 6, 7]).
 -define(DUP_LIST, [1, 1, 1, 1, 1, 2, 3, 1, 1, 2, 2, 2, 4, 5, 6, 7, 7, 7]).
@@ -84,7 +84,7 @@ repl([], _) -> [];
 repl(L=[H|T], N) when is_list(L) -> repl(H, N) ++ repl(T, N);
 repl(X, N) -> [X] ++ repl(X, N - 1).
 
-my_lists() ->
+start() ->
     io:format("last: ~p~n", [last(?MY_LIST)]),
     io:format("last but one: ~p~n", [last2(?MY_LIST)]),
     io:format("5th: ~p~n", [nth(?MY_LIST, 5)]),
