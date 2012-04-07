@@ -84,6 +84,35 @@ repl([], _) -> [];
 repl(L=[H|T], N) when is_list(L) -> repl(H, N) ++ repl(T, N);
 repl(X, N) -> [X] ++ repl(X, N - 1).
 
+%% (16) drop every N'th element from a list
+drop_nth([H|T], N, I) when (N + 1) rem I == 1 -> drop_nth(T, N, I + 1);
+drop_nth([H|T], N, I) -> [H] ++ drop_nth(T, N, I + 1).
+drop_nth(L, N) -> drop_nth(L, N, 1).
+
+%% (17) split a list into two parts; the length of the first part is given
+split1([H|T], N, I, Buf) when N == I -> [Buf ++ [H], T];
+split1([H|T], N, I, Buf) -> split1(T, N, I + 1, Buf ++ [H]).
+split1([H|T], N, I) -> split1(T, N, I + 1, [H]).
+split1(L, N) -> split1(L, N, 1).
+
+%% (18) extract a slice from a list
+slice1(L, From, To) -> L.
+
+%% (19) dotate a list N places to the left
+%% (20) remove the K'th element from a list
+remove_at([H|T], N, I) when N == I -> T;
+remove_at([H|T], N, I) -> [H] ++ remove_at(T, N, I + 1).
+remove_at(L, N) -> remove_at(L, N, 1).
+
+%% (21) insert an element at a given position into a list
+%% (22) create a list containing all integers within a given range
+%% (23) extract a given number of randomly selected elements from a list
+%% (24) lotto: draw N different random numbers from the set 1..M
+%% (25) generate a random permutation of the elements of a list
+%% (26) generate the combinations of K distinct objects chosen from the N elements of a list
+%% (27) group the elements of a set into disjoint subsets
+%% (28) sorting a list of lists according to length of sublists
+
 start() ->
     io:format("last: ~p~n", [last(?MY_LIST)]),
     io:format("last but one: ~p~n", [last2(?MY_LIST)]),
@@ -99,5 +128,8 @@ start() ->
     io:format("decode_dup ~p~n", [decode_dup([{3, 5}, 2, 3, 4, {2, 8}, {4, 11}, 0])]),
     io:format("count3_dup ~p~n", [count3_dup(?DUP_LIST)]),
     io:format("dup ~p~n", [dupl([1, 2, 3, 4, 5, 6])]),
-    io:format("repl ~p~n", [repl([1, 2, 3, 4, 5, 6], 3)]).
+    io:format("repl ~p~n", [repl([1, 2, 3, 4, 5, 6], 3)]),
+    io:format("drop every nth: ~p~n", [drop_nth([1, 2, 3, 4, 5, 6, 7, 8, 9], 3)]),
+    io:format("split: ~p~n", [split1([1, 2, 3, 4, 5, 6, 7, 8, 9], 3)]),
+    io:format("slice: ~p~n", [slice1([1, 2, 3, 4, 5, 6, 7, 8, 9], 3, 4)]).
 
