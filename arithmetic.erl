@@ -9,8 +9,9 @@ test_prime(N, M) ->
 		_Else -> test_prime(N, M - 1)
 	end.
 
-is_prime(N) when N == 1 -> false;
-is_prime(N) when N == 2 -> true;
+is_prime(1) -> false;
+is_prime(2) -> true;
+is_prime(3) -> true;
 is_prime(N) -> test_prime(N, erlang:trunc(math:sqrt(N))).
 
 %% (32) Determine the greatest common divisor of two positive integer numbers
@@ -77,6 +78,37 @@ compare_phi(N) ->
 %% (39) a list of prime numbers
 prime_numbers(X, Y) -> [I || I <- lists:seq(X, Y), is_prime(I)].
 
+%% (40) Goldbach's conjecture
+goldbach(_, M, Result) when M < 2 -> Result;
+goldbach(N, M, Result) when N == M ->
+    case is_prime(N) of
+        true -> Result ++ [N];
+        false -> goldbach(N, M - 1, Result)
+    end;
+goldbach(N, M, Result) when N - M > 1 -> 
+    case is_prime(M) of
+        true -> goldbach(N - M, M - 1, Result ++ [M]);
+        false -> goldbach(N, M - 1, Result)
+    end;
+goldbach(N, M, Result) -> goldbach(N, M - 1, Result).
+
+goldbach(N) -> goldbach(N, N - 1, []).
+
+%% (41) a list of Goldbach compositions
+join([H|_=[]], _) -> integer_to_list(H);
+join([H|T], Sep) ->
+    integer_to_list(H) ++ Sep ++ join(T, Sep).
+
+goldbach_list(From, To) when From rem 2 /= 0 -> goldbach_list(From + 1, To);
+goldbach_list(From, To) when From > To -> none;
+goldbach_list(From, To) ->
+    G = goldbach(From),
+    if
+        erlang:length(G) > 0 -> io:format("golbach(~p) = ~s~n", [From, join(G, "+")]);
+        true -> none
+    end,
+    goldbach_list(From + 1, To).
+
 start() ->
     lists:map(fun(N) ->
         case is_prime(N) of
@@ -91,5 +123,8 @@ start() ->
     io:format("prime factors of 315: ~p~n", [prime_factors2(315)]),
     io:format("phi(10) = ~p~n", [phi2(10)]),
     io:format("compare phi(10090) = ~p~n", [compare_phi(10090)]),
-    io:format("prime numbers from 100 to 1000: ~p~n", [prime_numbers(100, 1000)]).
+    %%io:format("prime numbers from 100 to 1000: ~p~n", [prime_numbers(100, 1000)]),
+    io:format("goldbach(28) = ~p~n", [goldbach(28)]),
+    goldbach_list(9, 20).
+    %%goldbach_list(1, 2000, 50).
 
