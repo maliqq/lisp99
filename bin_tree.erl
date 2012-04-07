@@ -5,7 +5,7 @@
 is_tree(Tree) when is_tuple(Tree) ->
     case tuple_size(Tree) of
         3 ->
-            Left = element(2, Tree), Right = element(3, Tree), is_tree(Left) and is_tree(Right);
+            {_, Left, Right} = Tree, is_tree(Left) and is_tree(Right);
         _Else -> false
     end;
 is_tree(_) ->
